@@ -1,4 +1,12 @@
 # Python Head First Design Patterns  
+## Chapters  
+[chapter 1](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/strategy)-"challenge" has not been translated yet  
+[chapter 2](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/observer)-done  
+[chapter 3](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/decorator)-done  
+[chapter 4](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/factory)-done  
+[chapter 5](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/singleton)-done  
+[chapter 6](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/command)-in translation  
+  
 ## Introduction  
 1. Translated from [Head-First-Design-Patterns](https://github.com/bethrobson/Head-First-Design-Patterns) (java)  
 2. What are the differences between other Python version Head-First-Design-Patterns and ours?  
@@ -47,10 +55,4 @@
      - We named the files with the same name and path as the original. (The following examples are from Chapter 1.)  
           ![image](https://user-images.githubusercontent.com/57841111/182039744-241d304f-9159-4019-bf11-8e798d4041ce.png)
 
-## Chapters  
-[chapter 1](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/strategy)-"challenge" has not been translated yet  
-[chapter 2](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/observer)-done  
-[chapter 3](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/decorator)-done  
-[chapter 4](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/factory)-done  
-[chapter 5](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/singleton)-done  
-[chapter 6](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/command)-in translation  
+
