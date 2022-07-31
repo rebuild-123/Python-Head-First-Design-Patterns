@@ -1,4 +1,4 @@
-# Python-Head-First-Design-Patterns  
+# Python Head First Design Patterns  
 I am trying to translate [Head-First-Design-Patterns](https://github.com/bethrobson/Head-First-Design-Patterns) (java) to python3.  
 [chapter 1](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/strategy)-"challenge" has not been translated yet  
 [chapter 2](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/observer)-done  
