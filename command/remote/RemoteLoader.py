@@ -22,7 +22,7 @@ class RemoteLoader:
         kitchenLight: Light = Light("Kitchen")
         ceilingFan: CeilingFan = CeilingFan("Living Room")
         garageDoor: GarageDoor = GarageDoor("Garage")
-        stereo: Stereo = Stereo("Living Room");
+        stereo: Stereo = Stereo("Living Room")
 
         livingRoomLightOn: LightOnCommand = LightOnCommand(livingRoomLight)
         livingRoomLightOff: LightOffCommand = LightOffCommand(livingRoomLight)
