@@ -23,6 +23,6 @@ class FunctionalInterface:
         return self.__class__(self.function, *args, **kwargs)
 
 @FunctionalInterface
-class Order:
-    def orderUp(self) -> None:
+class Command:
+    def execute(self) -> None:
         pass
