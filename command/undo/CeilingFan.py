@@ -11,6 +11,7 @@ class CeilingFan:
         
     def __init__(self, location: str):
         self.location = location
+        self.speed = self.OFF
         
     def high(self) -> None:
         # turns the ceiling fan on to high

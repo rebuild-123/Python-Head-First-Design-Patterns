@@ -10,6 +10,3 @@ class LightOnCommand(Command):
         
     def execute(self) -> None:
         self.light.on()
-        
-    def undo(self) -> None:
-        self.light.off()

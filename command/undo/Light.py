@@ -7,11 +7,11 @@ class Light:
         
     def on(self) -> None:
         self.level = 100
-        print(f'{self.location} light is on')
+        print("Light is on")
         
     def off(self) -> None:
         self.level = 0
-        print(f'{self.location} light is off')
+        print("Light is off")
         
     def dim(self, level: int) -> None:
         self.level = level

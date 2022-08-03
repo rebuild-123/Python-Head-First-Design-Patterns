@@ -2,14 +2,16 @@ from Command import Command
 from Light import Light
 
 
-class LightOnCommand(Command):
+class LightOffCommand(Command):
     light: Light
+    level: int = 0
         
     def __init__(self, light: Light):
         self.light = light
         
     def execute(self) -> None:
-        self.light.on()
+        self.level = self.light.getLevel()
+        self.light.off()
         
     def undo(self) -> None:
-        self.light.off()
+        self.light.dim(self.level)

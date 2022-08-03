@@ -5,7 +5,7 @@ from CeilingFan import CeilingFan
 from Command import Command
 
 
-class CeilingFanMediumCommand(Command):
+class CeilingFanHighCommand(Command):
     ceilingFan: CeilingFan
     prevSpeed: int = 0
     
@@ -14,7 +14,7 @@ class CeilingFanMediumCommand(Command):
         
     def execute(self) -> None:
         self.prevSpeed = self.ceilingFan.getSpeed()
-        self.ceilingFan.medium()
+        self.ceilingFan.high()
         
     def undo(self) -> None:
         if re.match(r'3\.[1-9][0-9]\.', sys.version[:5]):
