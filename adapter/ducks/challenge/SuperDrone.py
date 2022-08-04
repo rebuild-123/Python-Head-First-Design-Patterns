@@ -1,4 +1,4 @@
-from challenge.Drone import Drone
+from .Drone import Drone
 
 
 class SuperDrone(Drone):
