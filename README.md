@@ -10,6 +10,8 @@
 ## Introduction  
 1. Translated from [Head-First-Design-Patterns](https://github.com/bethrobson/Head-First-Design-Patterns) (java)  
 2. What are the differences between other Python version Head-First-Design-Patterns and ours?  
+     - We named the files with the same name and path as the original. (The following examples are from Chapter 1.)  
+          ![image](https://user-images.githubusercontent.com/57841111/182039744-241d304f-9159-4019-bf11-8e798d4041ce.png)  
      - We annotate the type of the code so that the code we translate is closer to the java version. (The following examples is from strategy/AnimalTest.py.)   
          ```python3
             # our code
@@ -52,7 +54,5 @@
                 animals.forEach(Animal::makeSound); // can call makeSound on any Animal
               }
          ```
-     - We named the files with the same name and path as the original. (The following examples are from Chapter 1.)  
-          ![image](https://user-images.githubusercontent.com/57841111/182039744-241d304f-9159-4019-bf11-8e798d4041ce.png)
 
 
