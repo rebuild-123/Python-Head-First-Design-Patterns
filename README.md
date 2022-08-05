@@ -7,6 +7,7 @@
 [chapter 5](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/singleton)-done  
 [chapter 6](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/command)-done (Only swing has no translation.)  
 [chapter 7(adapter)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/adapter)-done  
+[chapter 7(facade)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/facade/hometheater)-done  
   
 ## Introduction  
 1. Translated from [Head-First-Design-Patterns](https://github.com/bethrobson/Head-First-Design-Patterns) (java)  
