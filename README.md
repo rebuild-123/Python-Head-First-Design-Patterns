@@ -1,6 +1,6 @@
 # Python Head First Design Patterns  
 ## Chapters  
-[chapter 1](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/strategy)-done (Only challenge has no translation.)  
+[chapter 1](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/strategy)-done  
 [chapter 2](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/observer)-done (Only swing has no translation.)  
 [chapter 3](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/decorator)-done (Only io has no translation.)  
 [chapter 4](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/factory)-done  
