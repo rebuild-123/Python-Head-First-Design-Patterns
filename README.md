@@ -1,14 +1,15 @@
 # Python Head First Design Patterns  
 ## Chapters  
-[chapter 1(strategy)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/strategy)-done  
-[chapter 2(observer)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/observer)-done (Only swing has no translation.)  
-[chapter 3(decorator)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/decorator)-done (Only io has no translation.)  
-[chapter 4(factory)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/factory)-done  
-[chapter 5(singleton)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/singleton)-done  
-[chapter 6(command)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/command)-done (Only swing has no translation.)  
-[chapter 7(adapter)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/adapter)-done  
-[chapter 7(facade)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/facade/hometheater)-done  
-[chapter 8(templatemethod)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/templatemethod)-done (applet and frame have no translation.)  
+[chapter 1(strategy)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/strategy)  
+[chapter 2(observer)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/observer) (Only swing has no translation.)  
+[chapter 3(decorator)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/decorator) (Only io has no translation.)  
+[chapter 4(factory)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/factory)  
+[chapter 5(singleton)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/singleton)  
+[chapter 6(command)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/command) (Only swing has no translation.)  
+[chapter 7(adapter)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/adapter)  
+[chapter 7(facade)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/facade/hometheater)  
+[chapter 8(templatemethod)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/templatemethod) (applet and frame have no translation.)  
+chapter 9(iterator) - in translation  
 ## Introduction  
 1. Translated from [Head-First-Design-Patterns](https://github.com/bethrobson/Head-First-Design-Patterns) (java)  
 2. What are the differences between other Python version Head-First-Design-Patterns and ours?  
