@@ -40,7 +40,7 @@ class MenuTestDrive:
         cafeMenu.add(MenuItem( "Burrito", "A large burrito, with whole pinto beans, salsa, guacamole", True, 4.29))
         waitress: Waitress = Waitress(allMenus)
             
-        waitress.printVegetarianMenu()
+        # waitress.printVegetarianMenu()
         waitress.printMenu() # book's example
         
 if __name__ == "__main__":
