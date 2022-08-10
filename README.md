@@ -12,6 +12,9 @@
 [chapter 9(iterator)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/iterator)  
 [chapter 9(composite)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/composite)  
 [chapter 10(state)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/state)  
+chapter 11(proxy) (Translating this chapter is beyond my ability.)  
+[chapter 12(combining)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/combining)  
+chapter 12(combined) (Translating this subsection is beyond my ability.)  
 ## Introduction  
 1. Translated from [Head-First-Design-Patterns](https://github.com/bethrobson/Head-First-Design-Patterns) (java)  
 2. What are the differences between other Python version Head-First-Design-Patterns and ours?  
