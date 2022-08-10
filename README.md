@@ -1,4 +1,5 @@
 # Python Head First Design Patterns  
+## Don't forget to give this repository a star, thanks.
 ## Chapters  
 [chapter 1(strategy)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/strategy)  
 [chapter 2(observer)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/observer) (Only swing has no translation.)  
