@@ -15,6 +15,11 @@
 chapter 11(proxy) (Translating this chapter is beyond my ability.)  
 [chapter 12(combining)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/combining)  
 chapter 12(combined) (Translating this subsection is beyond my ability.)  
+chapter 13 (No code)  
+[Appendix (collections)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/collections)  
+[Appendix (ducks)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/ducks)  
+[Appendix (iterenum)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/iterenum)  
+
 ## Introduction  
 1. Translated from [Head-First-Design-Patterns](https://github.com/bethrobson/Head-First-Design-Patterns) (java)  
 2. What are the differences between other Python version Head-First-Design-Patterns and ours?  
