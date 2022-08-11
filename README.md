@@ -20,6 +20,8 @@ chapter 13 (No code)
 [Appendix (collections)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/collections)  
 [Appendix (ducks)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/ducks)  
 [Appendix (iterenum)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/iterenum)  
+[Appendix (bridge)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/bridge)  
+[Appendix (builder)](https://github.com/rebuild-123/Python-Head-First-Design-Patterns/tree/main/builder)  
 
 ## Introduction  
 1. Translated from [Head-First-Design-Patterns](https://github.com/bethrobson/Head-First-Design-Patterns) (java)  
