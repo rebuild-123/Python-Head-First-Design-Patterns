@@ -22,6 +22,6 @@ class ForecastDisplay(Observer, DisplayElement):
         if self.__currentPressure > self.__lastPressure:
             print("Improving weather on the way!")
         elif self.__currentPressure == self.__lastPressure:
-            print("Forecast: More of the same")
+            print("More of the same")
         elif self.__currentPressure < self.__lastPressure:
             print("Watch out for cooler, rainy weather")
