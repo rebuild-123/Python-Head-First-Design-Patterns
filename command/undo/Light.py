@@ -18,7 +18,9 @@ class Light:
         if level == 0:
             self.off()
         else:
-            print(f"Light is dimmed to {self.level}%")
+            # print(f"Light is dimmed to {self.level}%") # authors' code
+            self.on() # Not the authors' code. But this code can help show the results in the book.
+        print() # Not the authors' code. But this code can help show the results in the book.
             
     def getLevel(self) -> int:
         return self.level
