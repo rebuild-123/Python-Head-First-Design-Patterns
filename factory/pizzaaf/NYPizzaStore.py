@@ -11,7 +11,7 @@ from VeggiePizza import VeggiePizza
 class NYPizzaStore(PizzaStore):
     def _createPizza(self, item: str) -> Pizza:
         pizza: Pizza = None
-        ingredientFactory = PizzaIngredientFactory = NYPizzaIngredientFactory()
+        ingredientFactory: PizzaIngredientFactory = NYPizzaIngredientFactory()
         
         if item == "cheese":
             

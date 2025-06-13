@@ -32,7 +32,7 @@ class WeatherData(Subject):
         self.__pressure = pressure
         self.measurementsChanged()
         
-    def getTemperatur(self) -> float:
+    def getTemperature(self) -> float:
         return self.__temperature
     
     def getHumidity(self) -> float:
