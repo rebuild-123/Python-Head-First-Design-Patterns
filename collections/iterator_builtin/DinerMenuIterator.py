@@ -27,7 +27,7 @@ class DinerMenuIterator(Iterator):
     def remove(self) -> None:
         if self.position <= 0:
             raise IllegalStateException("You can't remove an item until you've done at least one next()")
-        if self.list[self.position-1] != None:
-            for i in range(self.position-1, len(self.list)-1):
-                self.list[i] = self.list[i+1]
-            self.list[len(self.list)-1] = None
+        if self.items[self.position-1] != None:
+            for i in range(self.position-1, len(self.items)-1):
+                self.items[i] = self.items[i+1]
+            self.items[len(self.items)-1] = None
