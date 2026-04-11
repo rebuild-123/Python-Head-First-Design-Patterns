@@ -24,5 +24,6 @@ jobs:
       issue_title: ${{ github.event.issue.title }}
       issue_body: ${{ github.event.issue.body }}
       comment_body: ${{ github.event.comment.body }}
+      task: ""
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
