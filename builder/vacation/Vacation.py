@@ -1,11 +1,9 @@
 from typing import List
 
-from Accommodation import Accommodation
-
 
 class StringBuffer:
-    def __init__(self):
-        self.ls = []
+    def __init__(self) -> None:
+        self.ls: List[str] = []
         
     def append(self, string: str) -> None:
         self.ls.append(string)
@@ -15,17 +13,17 @@ class StringBuffer:
 
 class Vacation:
     name: str
-    accommodations: List[Accommodation]
+    accommodations: List[str]
     events: List[str]
         
-    def __init__(self):
-        self.accommodations = []
-        self.events = []
+    def __init__(self) -> None:
+        self.accommodations: List[str] = []
+        self.events: List[str] = []
         
     def setName(self, name: str) -> None:
         self.name = name
         
-    def setAccommodations(self, accommodations: List[Accommodation]) -> None:
+    def setAccommodations(self, accommodations: List[str]) -> None:
         self.accommodations = accommodations
         
     def setEvents(self, events: List[str]) -> None:

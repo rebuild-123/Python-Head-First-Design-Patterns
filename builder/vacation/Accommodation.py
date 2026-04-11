@@ -1,11 +1,12 @@
 from abc import ABC, abstractmethod
+from typing import List, Optional
 
 from Reservation import Reservation
 
 
 class StringBuffer:
-    def __init__(self):
-        self.ls = []
+    def __init__(self) -> None:
+        self.ls: List[str] = []
         
     def append(self, string: str) -> None:
         self.ls.append(string)
@@ -15,11 +16,12 @@ class StringBuffer:
 
 class Accommodation(ABC):
     name: str
-    reservation: Reservation = None
+    reservation: Optional[Reservation] = None
         
     def setReservation(self, r: Reservation) -> None:
         self.reservation = r
-    def getReservation(self) -> Reservation:
+
+    def getReservation(self) -> Optional[Reservation]:
         return self.reservation
     @abstractmethod
     def getLocation(self) -> str:
