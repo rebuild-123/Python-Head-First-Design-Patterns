@@ -8,12 +8,7 @@ jobs:
   resolve:
     if: >
       !github.event.issue.pull_request &&
-      startsWith(github.event.comment.body, '/codex ') &&
-      (
-        github.event.comment.author_association == 'OWNER' ||
-        github.event.comment.author_association == 'MEMBER' ||
-        github.event.comment.author_association == 'COLLABORATOR'
-      )
+      startsWith(github.event.comment.body, '/codex ')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,38 +16,34 @@ jobs:
     outputs:
       mode: ${{ steps.parse.outputs.mode }}
       target_branch: ${{ steps.parse.outputs.target_branch }}
-      max_rounds: ${{ steps.parse.outputs.max_rounds }}
     steps:
       - name: Parse and validate command
         id: parse
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ github.token }}
           script: |
             const body = context.payload.comment.body.trim();
 
-            const modeMatch = body.match(/^\/codex\s+(plan|implement|review|autopilot)\b/i);
-            if (!modeMatch) {
+            const match = body.match(
+              /^\/codex\s+(plan|implement|review)\b(?:.*?\bbranch=([A-Za-z0-9._\/-]+))?\s*$/i
+            );
+
+            if (!match) {
               core.setFailed(
-                "Invalid command. Use: /codex <plan|implement|review|autopilot> branch=<branch-name> [max_rounds=1|2|3]"
+                "Invalid command. Use: /codex <plan|implement|review> branch=<branch-name>"
               );
               return;
             }
 
-            const mode = modeMatch[1].toLowerCase();
+            const mode = match[1].toLowerCase();
+            const branch = match[2];
 
-            const branchMatch = body.match(/\bbranch=([A-Za-z0-9._\/-]+)\b/i);
-            if (!branchMatch) {
+            if (!branch) {
               core.setFailed(
-                "Missing branch. Use: /codex <plan|implement|review|autopilot> branch=<branch-name>"
+                "Missing branch. Use: /codex <plan|implement|review> branch=<branch-name>"
               );
               return;
             }
-
-            const branch = branchMatch[1];
-
-            const roundsMatch = body.match(/\bmax_rounds=(\d+)\b/i);
-            const maxRounds = roundsMatch ? Number(roundsMatch[1]) : 3;
 
             const isValidChars = /^[A-Za-z0-9._/-]+$/.test(branch);
             const hasDangerousPattern =
@@ -75,13 +66,6 @@ jobs:
               return;
             }
 
-            if (mode === "autopilot") {
-              if (!Number.isInteger(maxRounds) || maxRounds < 1 || maxRounds > 3) {
-                core.setFailed("max_rounds must be 1, 2, or 3 for autopilot mode.");
-                return;
-              }
-            }
-
             try {
               await github.rest.git.getRef({
                 owner: context.repo.owner,
@@ -95,33 +79,25 @@ jobs:
 
             core.setOutput("mode", mode);
             core.setOutput("target_branch", branch);
-            core.setOutput("max_rounds", String(maxRounds));
 
       - name: Comment usage on failure
         if: failure()
-        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
+        uses: actions/github-script@v7
         with:
-          github-token: ${{ github.token }}
           script: |
             const usage = [
               "Codex command format is invalid.",
               "",
               "Use one of:",
-              "- `/codex plan branch=codex/example`",
-              "- `/codex implement branch=codex/example`",
-              "- `/codex review branch=codex/example`",
-              "- `/codex autopilot branch=codex/example max_rounds=3`",
+              "- `/codex plan branch=codex/settings`",
+              "- `/codex implement branch=codex/settings`",
+              "- `/codex review branch=codex/settings`",
               "",
               "Allowed branch prefixes:",
               "- `codex/`",
               "- `feature/`",
               "- `bugfix/`",
               "- `hotfix/`",
-              "",
-              "Process rules:",
-              "- `implement` requires an existing latest trusted `plan` comment for the same issue and branch.",
-              "- `review` evaluates the latest trusted implementation for the same issue and branch.",
-              "- `autopilot` runs bounded retries and still leaves the final merge to human approval.",
             ].join("\n");
 
             await github.rest.issues.createComment({
@@ -131,69 +107,20 @@ jobs:
               body: usage,
             });
 
-  codex_plan:
+  codex:
     needs: resolve
-    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'plan'
-    permissions:
-      contents: read
-      issues: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-plan.yml@a1dece90934b2a2076e49da7c9b81c1da38ac700
-    with:
-      target_branch: ${{ needs.resolve.outputs.target_branch }}
-      base_branch: ${{ github.event.repository.default_branch }}
-      issue_number: ${{ github.event.issue.number }}
-      issue_title: ${{ github.event.issue.title }}
-      issue_body: ${{ github.event.issue.body }}
-    secrets:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-  codex_implement:
-    needs: resolve
-    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'implement'
-    permissions:
-      contents: write
-      issues: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-implement.yml@a1dece90934b2a2076e49da7c9b81c1da38ac700
-    with:
-      target_branch: ${{ needs.resolve.outputs.target_branch }}
-      base_branch: ${{ github.event.repository.default_branch }}
-      issue_number: ${{ github.event.issue.number }}
-      issue_title: ${{ github.event.issue.title }}
-      issue_body: ${{ github.event.issue.body }}
-    secrets:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-  codex_review:
-    needs: resolve
-    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'review'
-    permissions:
-      contents: read
-      issues: write
-      pull-requests: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-review.yml@a1dece90934b2a2076e49da7c9b81c1da38ac700
-    with:
-      target_branch: ${{ needs.resolve.outputs.target_branch }}
-      base_branch: ${{ github.event.repository.default_branch }}
-      issue_number: ${{ github.event.issue.number }}
-      issue_title: ${{ github.event.issue.title }}
-      issue_body: ${{ github.event.issue.body }}
-    secrets:
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-
-  codex_autopilot:
-    needs: resolve
-    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'autopilot'
+    if: needs.resolve.result == 'success'
     permissions:
       contents: write
       issues: write
       pull-requests: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-autopilot.yml@a1dece90934b2a2076e49da7c9b81c1da38ac700
+    uses: rebuild-123/codex-automation/.github/workflows/codex-issue-runner.yml@main
     with:
       target_branch: ${{ needs.resolve.outputs.target_branch }}
-      base_branch: ${{ github.event.repository.default_branch }}
       issue_number: ${{ github.event.issue.number }}
       issue_title: ${{ github.event.issue.title }}
       issue_body: ${{ github.event.issue.body }}
-      max_rounds: ${{ needs.resolve.outputs.max_rounds }}
+      comment_body: ${{ github.event.comment.body }}
+      task: ""
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
