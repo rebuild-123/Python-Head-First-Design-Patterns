@@ -3,7 +3,7 @@ from Accommodation import Accommodation
 
 class Tent(Accommodation):
     siteNumber: int = 0
-    def __init__(self, name: str = "Tent"):
+    def __init__(self, name: str = "Tent") -> None:
         self.name = name
     def setSiteNumber(self, n: int) -> None:
         self.siteNumber = n

@@ -26,6 +26,6 @@ class VacationBuilder(ABC):
     def getVacation(self) -> Vacation:
         vacation: Vacation = Vacation()
         vacation.setName(self.name)
-        vacation.setAccommodations(self.accommodations)
-        vacation.setEvents(self.events)
+        vacation.setAccommodations(list(self.accommodations))
+        vacation.setEvents(list(self.events))
         return vacation

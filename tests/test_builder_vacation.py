@@ -54,6 +54,16 @@ class TestVacationBuilders(unittest.TestCase):
 
         self.assertIn("You're staying at Tent", vacation_str)
 
+    def test_get_vacation_returns_isolated_snapshot(self) -> None:
+        builder = CityVacationBuilder()
+        builder.addAccommodation_1()
+
+        first_vacation = builder.getVacation()
+        builder.addEvent("Magic")
+
+        self.assertNotIn("See the Magic show", str(first_vacation))
+        self.assertIn("See the Magic show", str(builder.getVacation()))
+
     def test_outdoors_add_accommodation_3_formats_reservation_and_site(self) -> None:
         builder = OutdoorsVacationBuilder()
 
