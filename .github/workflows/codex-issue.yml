@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Parse and validate command
         id: parse
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         with:
           github-token: ${{ github.token }}
           script: |
@@ -99,7 +99,7 @@ jobs:
 
       - name: Comment usage on failure
         if: failure()
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b
         with:
           github-token: ${{ github.token }}
           script: |
@@ -119,8 +119,8 @@ jobs:
               "- `hotfix/`",
               "",
               "Process rules:",
-              "- `implement` requires an existing latest `plan` comment for the same issue and branch.",
-              "- `review` evaluates the latest implementation for the same issue and branch.",
+              "- `implement` requires an existing latest trusted `plan` comment for the same issue and branch.",
+              "- `review` evaluates the latest trusted implementation for the same issue and branch.",
               "- `autopilot` runs bounded retries and still leaves the final merge to human approval.",
             ].join("\n");
 
@@ -135,18 +135,15 @@ jobs:
     needs: resolve
     if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'plan'
     permissions:
-      contents: write
+      contents: read
       issues: write
-      pull-requests: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-plan.yml@main
+    uses: rebuild-123/codex-automation/.github/workflows/codex-plan.yml@53b59151eede111938998f5509293a79fd620a2b
     with:
       target_branch: ${{ needs.resolve.outputs.target_branch }}
       base_branch: ${{ github.event.repository.default_branch }}
       issue_number: ${{ github.event.issue.number }}
       issue_title: ${{ github.event.issue.title }}
       issue_body: ${{ github.event.issue.body }}
-      comment_body: ${{ github.event.comment.body }}
-      task: ""
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
@@ -156,16 +153,13 @@ jobs:
     permissions:
       contents: write
       issues: write
-      pull-requests: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-implement.yml@main
+    uses: rebuild-123/codex-automation/.github/workflows/codex-implement.yml@53b59151eede111938998f5509293a79fd620a2b
     with:
       target_branch: ${{ needs.resolve.outputs.target_branch }}
       base_branch: ${{ github.event.repository.default_branch }}
       issue_number: ${{ github.event.issue.number }}
       issue_title: ${{ github.event.issue.title }}
       issue_body: ${{ github.event.issue.body }}
-      comment_body: ${{ github.event.comment.body }}
-      task: ""
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
@@ -173,18 +167,16 @@ jobs:
     needs: resolve
     if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'review'
     permissions:
-      contents: write
+      contents: read
       issues: write
       pull-requests: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-review.yml@main
+    uses: rebuild-123/codex-automation/.github/workflows/codex-review.yml@53b59151eede111938998f5509293a79fd620a2b
     with:
       target_branch: ${{ needs.resolve.outputs.target_branch }}
       base_branch: ${{ github.event.repository.default_branch }}
       issue_number: ${{ github.event.issue.number }}
       issue_title: ${{ github.event.issue.title }}
       issue_body: ${{ github.event.issue.body }}
-      comment_body: ${{ github.event.comment.body }}
-      task: ""
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
@@ -195,15 +187,13 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-autopilot.yml@main
+    uses: rebuild-123/codex-automation/.github/workflows/codex-autopilot.yml@53b59151eede111938998f5509293a79fd620a2b
     with:
       target_branch: ${{ needs.resolve.outputs.target_branch }}
       base_branch: ${{ github.event.repository.default_branch }}
       issue_number: ${{ github.event.issue.number }}
       issue_title: ${{ github.event.issue.title }}
       issue_body: ${{ github.event.issue.body }}
-      comment_body: ${{ github.event.comment.body }}
-      task: ""
       max_rounds: ${{ needs.resolve.outputs.max_rounds }}
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
