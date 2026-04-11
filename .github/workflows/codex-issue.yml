@@ -21,6 +21,7 @@ jobs:
     outputs:
       mode: ${{ steps.parse.outputs.mode }}
       target_branch: ${{ steps.parse.outputs.target_branch }}
+      max_rounds: ${{ steps.parse.outputs.max_rounds }}
     steps:
       - name: Parse and validate command
         id: parse
@@ -30,26 +31,27 @@ jobs:
           script: |
             const body = context.payload.comment.body.trim();
 
-            const match = body.match(
-              /^\/codex\s+(plan|implement|review)\b(?:.*?\bbranch=([A-Za-z0-9._\/-]+))?\s*$/i
-            );
-
-            if (!match) {
+            const modeMatch = body.match(/^\/codex\s+(plan|implement|review|autopilot)\b/i);
+            if (!modeMatch) {
               core.setFailed(
-                "Invalid command. Use: /codex <plan|implement|review> branch=<branch-name>"
+                "Invalid command. Use: /codex <plan|implement|review|autopilot> branch=<branch-name> [max_rounds=1|2|3]"
               );
               return;
             }
 
-            const mode = match[1].toLowerCase();
-            const branch = match[2];
+            const mode = modeMatch[1].toLowerCase();
 
-            if (!branch) {
+            const branchMatch = body.match(/\bbranch=([A-Za-z0-9._\/-]+)\b/i);
+            if (!branchMatch) {
               core.setFailed(
-                "Missing branch. Use: /codex <plan|implement|review> branch=<branch-name>"
+                "Missing branch. Use: /codex <plan|implement|review|autopilot> branch=<branch-name>"
               );
               return;
             }
+
+            const branch = branchMatch[1];
+            const roundsMatch = body.match(/\bmax_rounds=(\d+)\b/i);
+            const maxRounds = roundsMatch ? Number(roundsMatch[1]) : 3;
 
             const isValidChars = /^[A-Za-z0-9._/-]+$/.test(branch);
             const hasDangerousPattern =
@@ -72,6 +74,13 @@ jobs:
               return;
             }
 
+            if (mode === "autopilot") {
+              if (!Number.isInteger(maxRounds) || maxRounds < 1 || maxRounds > 3) {
+                core.setFailed("max_rounds must be 1, 2, or 3 for autopilot mode.");
+                return;
+              }
+            }
+
             try {
               await github.rest.git.getRef({
                 owner: context.repo.owner,
@@ -85,6 +94,7 @@ jobs:
 
             core.setOutput("mode", mode);
             core.setOutput("target_branch", branch);
+            core.setOutput("max_rounds", String(maxRounds));
 
       - name: Comment usage on failure
         if: failure()
@@ -99,6 +109,7 @@ jobs:
               "- `/codex plan branch=codex/example`",
               "- `/codex implement branch=codex/example`",
               "- `/codex review branch=codex/example`",
+              "- `/codex autopilot branch=codex/example max_rounds=3`",
               "",
               "Allowed branch prefixes:",
               "- `codex/`",
@@ -109,6 +120,7 @@ jobs:
               "Process rules:",
               "- `implement` requires an existing latest `plan` comment for the same issue and branch.",
               "- `review` evaluates the latest implementation for the same issue and branch.",
+              "- `autopilot` runs plan -> implement -> review automatically, then continues bounded retries up to `max_rounds`.",
             ].join("\n");
 
             await github.rest.issues.createComment({
@@ -118,9 +130,9 @@ jobs:
               body: usage,
             });
 
-  codex:
+  codex_manual:
     needs: resolve
-    if: needs.resolve.result == 'success'
+    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode != 'autopilot'
     permissions:
       contents: write
       issues: write
@@ -135,5 +147,27 @@ jobs:
       issue_body: ${{ github.event.issue.body }}
       comment_body: ${{ github.event.comment.body }}
       task: ""
+      max_rounds: ${{ needs.resolve.outputs.max_rounds }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+  codex_autopilot:
+    needs: resolve
+    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'autopilot'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    uses: rebuild-123/codex-automation/.github/workflows/codex-issue-runner.yml@main
+    with:
+      mode: autopilot
+      target_branch: ${{ needs.resolve.outputs.target_branch }}
+      base_branch: ${{ github.event.repository.default_branch }}
+      issue_number: ${{ github.event.issue.number }}
+      issue_title: ${{ github.event.issue.title }}
+      issue_body: ${{ github.event.issue.body }}
+      comment_body: ${{ github.event.comment.body }}
+      task: ""
+      max_rounds: ${{ needs.resolve.outputs.max_rounds }}
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
