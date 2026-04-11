@@ -1,41 +1,45 @@
 from abc import ABC, abstractmethod
+from typing import List, Optional
 
 from Reservation import Reservation
 
 
 class StringBuffer:
-    def __init__(self):
-        self.ls = []
-        
+    def __init__(self) -> None:
+        self.ls: List[str] = []
+
     def append(self, string: str) -> None:
         self.ls.append(string)
-        
+
     def toString(self) -> str:
-        return ''.join(self.ls)
+        return "".join(self.ls)
+
 
 class Accommodation(ABC):
     name: str
-    reservation: Reservation = None
-        
+    reservation: Optional[Reservation] = None
+
     def setReservation(self, r: Reservation) -> None:
         self.reservation = r
-    def getReservation(self) -> Reservation:
+
+    def getReservation(self) -> Optional[Reservation]:
         return self.reservation
+
     @abstractmethod
     def getLocation(self) -> str:
         pass
-    
+
     # toString
     def __str__(self) -> str:
         display: StringBuffer = StringBuffer()
         display.append(f"You're staying at {self.name}")
-        if self.reservation != None:
+        if self.reservation is not None:
             display.append(f"\nYou have a reservation for arrival date: {self.reservation.getArrivalDate()}, staying for {self.reservation.getNights()} nights")
         if self.getLocation() != "":
             display.append(f" in {self.getLocation()}")
         display.append("\n")
         return display.toString()
-    
+
     #toString for print
     def __repr__(self) -> str:
         return str(self)

@@ -2,13 +2,12 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import List
 
-from Accommodation import Accommodation
 from Vacation import Vacation
 
 
 class VacationBuilder(ABC):
     name: str
-    accommodations: List[Accommodation]
+    accommodations: List[str]
     events: List[str]
         
     @abstractmethod
