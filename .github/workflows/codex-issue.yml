@@ -8,7 +8,12 @@ jobs:
   resolve:
     if: >
       !github.event.issue.pull_request &&
-      startsWith(github.event.comment.body, '/codex ')
+      startsWith(github.event.comment.body, '/codex ') &&
+      (
+        github.event.comment.author_association == 'OWNER' ||
+        github.event.comment.author_association == 'MEMBER' ||
+        github.event.comment.author_association == 'COLLABORATOR'
+      )
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,6 +26,7 @@ jobs:
         id: parse
         uses: actions/github-script@v7
         with:
+          github-token: ${{ github.token }}
           script: |
             const body = context.payload.comment.body.trim();
 
@@ -84,20 +90,25 @@ jobs:
         if: failure()
         uses: actions/github-script@v7
         with:
+          github-token: ${{ github.token }}
           script: |
             const usage = [
               "Codex command format is invalid.",
               "",
               "Use one of:",
-              "- `/codex plan branch=codex/settings`",
-              "- `/codex implement branch=codex/settings`",
-              "- `/codex review branch=codex/settings`",
+              "- `/codex plan branch=codex/example`",
+              "- `/codex implement branch=codex/example`",
+              "- `/codex review branch=codex/example`",
               "",
               "Allowed branch prefixes:",
               "- `codex/`",
               "- `feature/`",
               "- `bugfix/`",
               "- `hotfix/`",
+              "",
+              "Process rules:",
+              "- `implement` requires an existing latest `plan` comment for the same issue and branch.",
+              "- `review` evaluates the latest implementation for the same issue and branch.",
             ].join("\n");
 
             await github.rest.issues.createComment({
@@ -116,7 +127,9 @@ jobs:
       pull-requests: write
     uses: rebuild-123/codex-automation/.github/workflows/codex-issue-runner.yml@main
     with:
+      mode: ${{ needs.resolve.outputs.mode }}
       target_branch: ${{ needs.resolve.outputs.target_branch }}
+      base_branch: ${{ github.event.repository.default_branch }}
       issue_number: ${{ github.event.issue.number }}
       issue_title: ${{ github.event.issue.title }}
       issue_body: ${{ github.event.issue.body }}
