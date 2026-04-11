@@ -1,0 +1,28 @@
+name: codex-issue
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  codex:
+    if: >
+      !github.event.issue.pull_request &&
+      (
+        startsWith(github.event.comment.body, '/codex plan') ||
+        startsWith(github.event.comment.body, '/codex implement') ||
+        startsWith(github.event.comment.body, '/codex review')
+      )
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    uses: yourname/codex-automation/.github/workflows/codex-issue-runner.yml@main
+    with:
+      target_branch: codex/settings
+      issue_number: ${{ github.event.issue.number }}
+      issue_title: ${{ github.event.issue.title }}
+      issue_body: ${{ github.event.issue.body }}
+      comment_body: ${{ github.event.comment.body }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
