@@ -50,6 +50,7 @@ jobs:
             }
 
             const branch = branchMatch[1];
+
             const roundsMatch = body.match(/\bmax_rounds=(\d+)\b/i);
             const maxRounds = roundsMatch ? Number(roundsMatch[1]) : 3;
 
@@ -120,7 +121,7 @@ jobs:
               "Process rules:",
               "- `implement` requires an existing latest `plan` comment for the same issue and branch.",
               "- `review` evaluates the latest implementation for the same issue and branch.",
-              "- `autopilot` runs plan -> implement -> review automatically, then continues bounded retries up to `max_rounds`.",
+              "- `autopilot` runs bounded retries and still leaves the final merge to human approval.",
             ].join("\n");
 
             await github.rest.issues.createComment({
@@ -130,16 +131,15 @@ jobs:
               body: usage,
             });
 
-  codex_manual:
+  codex_plan:
     needs: resolve
-    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode != 'autopilot'
+    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'plan'
     permissions:
       contents: write
       issues: write
       pull-requests: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-issue-runner.yml@main
+    uses: rebuild-123/codex-automation/.github/workflows/codex-plan.yml@main
     with:
-      mode: ${{ needs.resolve.outputs.mode }}
       target_branch: ${{ needs.resolve.outputs.target_branch }}
       base_branch: ${{ github.event.repository.default_branch }}
       issue_number: ${{ github.event.issue.number }}
@@ -147,7 +147,44 @@ jobs:
       issue_body: ${{ github.event.issue.body }}
       comment_body: ${{ github.event.comment.body }}
       task: ""
-      max_rounds: ${{ needs.resolve.outputs.max_rounds }}
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+  codex_implement:
+    needs: resolve
+    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'implement'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    uses: rebuild-123/codex-automation/.github/workflows/codex-implement.yml@main
+    with:
+      target_branch: ${{ needs.resolve.outputs.target_branch }}
+      base_branch: ${{ github.event.repository.default_branch }}
+      issue_number: ${{ github.event.issue.number }}
+      issue_title: ${{ github.event.issue.title }}
+      issue_body: ${{ github.event.issue.body }}
+      comment_body: ${{ github.event.comment.body }}
+      task: ""
+    secrets:
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+  codex_review:
+    needs: resolve
+    if: needs.resolve.result == 'success' && needs.resolve.outputs.mode == 'review'
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    uses: rebuild-123/codex-automation/.github/workflows/codex-review.yml@main
+    with:
+      target_branch: ${{ needs.resolve.outputs.target_branch }}
+      base_branch: ${{ github.event.repository.default_branch }}
+      issue_number: ${{ github.event.issue.number }}
+      issue_title: ${{ github.event.issue.title }}
+      issue_body: ${{ github.event.issue.body }}
+      comment_body: ${{ github.event.comment.body }}
+      task: ""
     secrets:
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
@@ -158,9 +195,8 @@ jobs:
       contents: write
       issues: write
       pull-requests: write
-    uses: rebuild-123/codex-automation/.github/workflows/codex-issue-runner.yml@main
+    uses: rebuild-123/codex-automation/.github/workflows/codex-autopilot.yml@main
     with:
-      mode: autopilot
       target_branch: ${{ needs.resolve.outputs.target_branch }}
       base_branch: ${{ github.event.repository.default_branch }}
       issue_number: ${{ github.event.issue.number }}
